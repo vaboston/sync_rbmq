@@ -46,13 +46,18 @@ class Handler(FileSystemEventHandler):
         elif event.event_type == 'created':
             # Take any action here when a file is first created.
             print("Received created event " + event.src_path)
-            credential_params = pika.PlainCredentials(cfg['rbmq']['user'],cfg['rbmq']['passwd'])
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost',credentials=credential_params))
-            channel = connection.channel()
-            channel.queue_declare(queue=cfg['rbmq']['queue']) # Declare a queue
-            channel.basic_publish(exchange='', routing_key=cfg['rbmq']['queue'], body=event.src_path)
-            print("[x] We have a new file")
-            connection.close()
+            print(event.src_path)
+            print(type(event.src_path))
+            if event.src_path.endswith('part'):
+                print("[x] We have a new part file")
+            else:
+                credential_params = pika.PlainCredentials(cfg['rbmq']['user'],cfg['rbmq']['passwd'])
+                connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost',credentials=credential_params))
+                channel = connection.channel()
+                channel.queue_declare(queue=cfg['rbmq']['queue']) # Declare a queue
+                channel.basic_publish(exchange='', routing_key=cfg['rbmq']['queue'], body=event.src_path)
+                print("[x] We have a new file")
+                connection.close()
 
         elif event.event_type == 'modified':
             # Taken any action here when a file is modified.
