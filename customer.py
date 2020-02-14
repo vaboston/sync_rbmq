@@ -17,7 +17,7 @@ channel.queue_declare(queue=cfg['rbmq']['queue'])
 def callback(ch, method, properties, body):
         print(" [x] Received %r" % body)
         encoding = 'utf-8'
-        rsync_cmd="/usr/bin/rsync -rvz -e 'ssh -p 2205' --bwlimit=1000 --progress root@" + cfg['rbmq']['host']  + ":" + str(body, encoding) + " /tmp/"
+        rsync_cmd="/usr/bin/rsync -rvz -e 'ssh -p 2205' --bwlimit=1000 --progress root@" + cfg['rbmq']['host']  + ":" + str(body, encoding) + " " + cfg['rbmq']['remote_path']
         os.system(rsync_cmd)
 
 channel.basic_consume(queue=cfg['rbmq']['queue'], on_message_callback=callback, auto_ack=True)
