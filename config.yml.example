@@ -1,6 +1,6 @@
 rbmq:
         host: localhost
-        user: vabo
-        passwd: Bonjour1
-        queue: downloads
-        path: '/tmp/vabo/'
+        user: guest
+        passwd: guest
+        queue: myQueue
+        path: '/tmp/'
