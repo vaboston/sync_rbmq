@@ -63,14 +63,3 @@ if __name__ == '__main__':
     w = Watcher()
     w.run()
 
-def list_files(path):
-	onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
-	return onlyfiles
-
-def return_pattern(pattern,path):
-	result = []
-	for i in list_files(path):
-		if pattern in i:
-			result.append(i)
-	return result
-
